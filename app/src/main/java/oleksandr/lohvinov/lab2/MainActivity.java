@@ -64,6 +64,11 @@ public class MainActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (savedInstanceState != null) {
+            searchText = savedInstanceState.getString(TITLE_SEARCH_KEY);
+            importanceLevel = savedInstanceState.getInt(IMPRT_FILTER_KEY);
+        }
+
         spinnerItemText = new String[]{getString(R.string.status_imp_all), getString(R.string.status_imp_low), getString(R.string.status_imp_mid), getString(R.string.status_imp_high)};
 
         Log.d("locale", LocaleHelper.getLanguage(this));
@@ -96,6 +101,14 @@ public class MainActivity
             }
         });
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putString(TITLE_SEARCH_KEY, searchText);
+        outState.putInt(IMPRT_FILTER_KEY, importanceLevel);
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -173,7 +186,12 @@ public class MainActivity
             }
         });
 
-
+        if (searchText != null) {
+            searchView.setQuery(searchText, true);
+        }
+        if (importanceLevel > 0) {
+            spinnerView.setSelection(importanceLevel);
+        }
         return super.onCreateOptionsMenu(menu);
 
     }
