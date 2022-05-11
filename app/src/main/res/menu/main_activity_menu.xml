@@ -12,4 +12,7 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/important_icon_low"
         android:title="importance"/>
+    <item android:id="@+id/changeLanguageBtn"
+        android:title="change language"
+        app:showAsAction="never"/>
 </menu>

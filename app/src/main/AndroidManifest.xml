@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LAB2">
         <activity
+            android:label="@string/edit_page_label"
             android:name=".EditNoteActivity"
             android:exported="true"
             android:parentActivityName=".MainActivity">
@@ -26,6 +27,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
+            android:label="@string/app_name"
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

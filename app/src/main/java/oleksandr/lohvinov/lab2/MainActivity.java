@@ -14,8 +14,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,7 +25,6 @@ import android.widget.ListView;
 
 import androidx.appcompat.widget.SearchView;
 
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,6 +32,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
 import oleksandr.lohvinov.lab2.data.NoteContract.NoteEntry;
+import oleksandr.lohvinov.lab2.utils.LocaleHelper;
 
 public class MainActivity
         extends AppCompatActivity
@@ -41,7 +41,9 @@ public class MainActivity
     private static final String TITLE_SEARCH_KEY = "title";
     private static final String IMPRT_FILTER_KEY = "impRate";
 
-    private String[] spinnerItemText = {"All", "Low", "Middle", "High"};
+    private String ukLanguageCode = "uk";
+
+    private String[] spinnerItemText;
     private Integer[] spinnerItemImages = {
             R.drawable.important_icon_all,
             R.drawable.important_icon_low,
@@ -61,6 +63,10 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        spinnerItemText = new String[]{getString(R.string.status_imp_all), getString(R.string.status_imp_low), getString(R.string.status_imp_mid), getString(R.string.status_imp_high)};
+
+        Log.d("locale", LocaleHelper.getLanguage(this));
 
         addButton = findViewById(R.id.addButtonId);
         notesList = findViewById(R.id.notesListId);
@@ -138,6 +144,36 @@ public class MainActivity
             }
         });
 
+        MenuItem changeLanguageItem = menu.findItem(R.id.changeLanguageBtn);
+        changeLanguageItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+                builder1.setTitle(getString(R.string.change_language_label));
+                String[] langs = new String[]{getString(R.string.ukrainian_lanuage), getString(R.string.enlish_lanuage)};
+                builder1.setItems(langs, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            Toast.makeText(MainActivity.this, "Ukrainian language", Toast.LENGTH_SHORT).show();
+                            LocaleHelper.setLocale(MainActivity.this, ukLanguageCode);
+                            recreate();
+
+                        } else if (which == 1) {
+                            Toast.makeText(MainActivity.this, "English language", Toast.LENGTH_SHORT).show();
+                            LocaleHelper.setLocale(MainActivity.this, "en");
+                            recreate();
+                        }
+                    }
+                });
+                AlertDialog alertDialog = builder1.create();
+                alertDialog.show();
+
+                return true;
+            }
+        });
+
+
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -169,8 +205,8 @@ public class MainActivity
         switch (item.getItemId()) {
             case R.id.deleteItem:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Do you want delete member?");
-                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                builder.setMessage(getString(R.string.delete_message));
+                builder.setPositiveButton(getString(R.string.delete_btn_txt), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Uri deleteNoteUri = ContentUris.withAppendedId(NoteEntry.CONTENT_URI, info.id);
@@ -183,7 +219,7 @@ public class MainActivity
                         }
                     }
                 });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(getString(R.string.cancel_btn_txt), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (dialogInterface != null) {
@@ -194,6 +230,7 @@ public class MainActivity
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
                 return true;
+
             default:
                 return super.onContextItemSelected(item);
         }

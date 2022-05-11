@@ -39,7 +39,7 @@ public class EditNoteActivity
 
     private static final int EDIT_NOTE_LOADER = 12345;
 
-    private String[] spinnerItemText = {"Low", "Middle", "High"};
+    private String[] spinnerItemText;
     private Integer[] spinnerItemImages = {
 
             R.drawable.important_icon_low,
@@ -57,7 +57,6 @@ public class EditNoteActivity
     private Uri noteIconUri;
 
     private Uri currentNoteUri;
-
 
 
     ActivityResultLauncher<String[]> mGetContent = registerForActivityResult(
@@ -78,12 +77,15 @@ public class EditNoteActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_note);
 
+        spinnerItemText = new String[]{getString(R.string.status_imp_low), getString(R.string.status_imp_mid), getString(R.string.status_imp_high)};
+
+
         Intent intent = getIntent();
         currentNoteUri = intent.getData();
         if (currentNoteUri == null) {
-            setTitle("Add member");
+            setTitle(getString(R.string.add_page_label));
         } else {
-            setTitle("Edit the member");
+            setTitle(getString(R.string.edit_page_label));
             LoaderManager.getInstance(this).initLoader(EDIT_NOTE_LOADER, null, this);
         }
 
