@@ -83,7 +83,7 @@ public class EditNoteActivity
         Intent intent = getIntent();
         currentNoteUri = intent.getData();
         if (currentNoteUri == null) {
-            setTitle(getString(R.string.add_page_label));
+            setTitle(getString(R.string.edit_page_label));
         } else {
             setTitle(getString(R.string.edit_page_label));
             LoaderManager.getInstance(this).initLoader(EDIT_NOTE_LOADER, null, this);
