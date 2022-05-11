@@ -41,6 +41,7 @@ public class EditNoteActivity
 
     private String[] spinnerItemText = {"Low", "Middle", "High"};
     private Integer[] spinnerItemImages = {
+
             R.drawable.important_icon_low,
             R.drawable.important_icon_middle,
             R.drawable.important_icon_high};
@@ -56,6 +57,8 @@ public class EditNoteActivity
     private Uri noteIconUri;
 
     private Uri currentNoteUri;
+
+
 
     ActivityResultLauncher<String[]> mGetContent = registerForActivityResult(
             new ActivityResultContracts.OpenDocument(),
@@ -83,7 +86,6 @@ public class EditNoteActivity
             setTitle("Edit the member");
             LoaderManager.getInstance(this).initLoader(EDIT_NOTE_LOADER, null, this);
         }
-
 
         noteTitleEditText = findViewById(R.id.noteTitleEditText);
         noteDescriptionEditText = findViewById(R.id.noteDescriptionEditText);
@@ -151,6 +153,7 @@ public class EditNoteActivity
 
         return true;
     }
+
 
     private void saveMember() {
         String title = noteTitleEditText.getText().toString().trim();
